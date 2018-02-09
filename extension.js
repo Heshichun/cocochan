@@ -12,15 +12,18 @@ function activate(context) {
     console.log('Congratulations, your extension "cocochan" is now active!');
     
     function talkMod_Start(){
-        var get_words = require('./sqlite_test.js');
-        function talkBox(){
-            vscode.window.showInformationMessage(get_words , 'next').then(()=>{
-                setTimeout(talkBox,1000)
-            });
-        }
         talkBox();
     }
     talkMod_Start();
+    var get_words = require('./sqlite_test.js');
+    function talkBox(word){
+        vscode.window.showInformationMessage(word , 'next').then(()=>{
+            setTimeout(talkBox,1000)
+        });
+    }
+    talkBox(get_words());
+
+    
 
 
     // var word = require('./sqlite_test.js');
