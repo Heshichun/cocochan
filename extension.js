@@ -11,18 +11,30 @@ function activate(context) {
     // This line of code will only be executed once when your extension is activated
     console.log('Congratulations, your extension "cocochan" is now active!');
     
-    function talkMod_Start(){
-        talkBox();
-    }
-    talkMod_Start();
-    var get_words = require('./sqlite_test.js');
-    function talkBox(word){
-        vscode.window.showInformationMessage(word , 'next').then(()=>{
-            setTimeout(talkBox,1000)
-        });
-    }
-    talkBox(get_words());
+    // function talkMod_Start(){
+    //     talkBox();
+    // }
+    // talkMod_Start();
 
+    // var get_words = require('./sqlite_test.js');
+    var Database = require('better-sqlite3');
+    var db = new Database('/Users/Anhedonia/Documents/Work/ts_task/1.db');
+    var row = db.prepare('SELECT name FROM test').all();
+    console.log(row);
+    // var keys = Object.keys(row);
+
+    function talkBox(word){
+        var i = 0;
+        function talk_func(message){
+            vscode.window.showInformationMessage(message, 'next').then(()=>{
+                setTimeout(talk_func,1000,word[++i].name);
+            })
+        }
+        talk_func(word[0].name);
+    }
+    talkBox(row);
+    
+    // vscode.window.showInformationMessage(row[1].name);
     
 
 
